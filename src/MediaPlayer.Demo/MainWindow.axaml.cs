@@ -11,6 +11,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using FluentIcons.Common;
@@ -22,14 +23,25 @@ public partial class MainWindow : Window
 {
     private readonly DispatcherTimer _statusTimer;
     private readonly DispatcherTimer _overlayIdleTimer;
+    private readonly DispatcherTimer _timelineSeekTimer;
     private static readonly TimeSpan OverlayHideDelay = TimeSpan.FromSeconds(1.7);
+    private static readonly TimeSpan TimelineSeekIntervalFast = TimeSpan.FromMilliseconds(32);
+    private static readonly TimeSpan TimelineSeekIntervalSlow = TimeSpan.FromMilliseconds(140);
+    private const double TimelineSeekMinDeltaFastSeconds = 0.08d;
+    private const double TimelineSeekMinDeltaSlowSeconds = 0.45d;
     private bool _isTimelineDragging;
     private bool _isTimelineUpdating;
     private bool _overlayVisible = true;
     private bool _isPointerOverHud;
     private bool _wasPlaying;
     private bool _alwaysShowControls;
+    private readonly bool _isMacOs = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+    private ExtendClientAreaChromeHints _defaultChromeHints;
     private DateTime _lastOverlayInteractionUtc = DateTime.UtcNow;
+    private double _pendingTimelineSeekSeconds;
+    private bool _hasPendingTimelineSeek;
+    private double _lastTimelineSeekSeconds = -1d;
+    private DateTime _lastTimelineSeekUtc = DateTime.MinValue;
     private int _lastFittedVideoWidth;
     private int _lastFittedVideoHeight;
     private DateTime _lastFitAttemptUtc = DateTime.MinValue;
@@ -38,6 +50,11 @@ public partial class MainWindow : Window
     private NativeMenuItem? _menuLoopItem;
     private NativeMenuItem? _menuFullscreenItem;
     private NativeMenuItem? _menuAlwaysShowControlsItem;
+    private NativeMenuItem? _menuRendererAutoItem;
+    private NativeMenuItem? _menuRendererOpenGlItem;
+    private NativeMenuItem? _menuRendererVulkanItem;
+    private NativeMenuItem? _menuRendererMetalItem;
+    private NativeMenuItem? _menuRendererSoftwareItem;
 
     private MainWindowViewModel ViewModel => (MainWindowViewModel)DataContext!;
 
@@ -45,9 +62,11 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = new MainWindowViewModel();
+        _defaultChromeHints = ExtendClientAreaChromeHints;
 
         _statusTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(120), DispatcherPriority.Background, (_, _) => UpdateStatus());
         _overlayIdleTimer = new DispatcherTimer(TimeSpan.FromMilliseconds(150), DispatcherPriority.Background, (_, _) => HideOverlayOnIdle());
+        _timelineSeekTimer = new DispatcherTimer(TimelineSeekIntervalFast, DispatcherPriority.Background, (_, _) => OnTimelineSeekTimerTick());
 
         _statusTimer.Start();
         _overlayIdleTimer.Start();
@@ -65,6 +84,7 @@ public partial class MainWindow : Window
         DetachPointerWakeHandlers();
         _statusTimer.Stop();
         _overlayIdleTimer.Stop();
+        _timelineSeekTimer.Stop();
         Player.Dispose();
     }
 
@@ -162,6 +182,7 @@ public partial class MainWindow : Window
     private void OnToggleFullScreenClicked(object? sender, RoutedEventArgs e)
     {
         WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
+        UpdateTrafficLightsVisibility(_overlayVisible);
         UpdateControlGlyphs();
         ShowOverlayAndRestartIdleTimer();
     }
@@ -200,7 +221,12 @@ public partial class MainWindow : Window
         var state = Player.IsPlaying ? "Playing" : "Paused/Stopped";
         var position = Player.Position.ToString(@"hh\:mm\:ss");
         var duration = Player.Duration.ToString(@"hh\:mm\:ss");
-        ViewModel.Status = $"{state} | {position} / {duration}";
+        var rendererPref = RendererPreferenceState.ToDisplayName(RendererPreferenceState.EffectivePreference);
+        var runtimeRenderer = RendererPreferenceState.ToDisplayName(RendererPreferenceState.RuntimePreference);
+        var rendererStatus = rendererPref == runtimeRenderer
+            ? runtimeRenderer
+            : $"{rendererPref}->{runtimeRenderer}";
+        ViewModel.Status = $"{state} | {position} / {duration} | Renderer: {rendererStatus}";
 
         if (Player.IsPlaying != _wasPlaying)
         {
@@ -246,6 +272,9 @@ public partial class MainWindow : Window
         SetOverlayVisible(true);
         e.Pointer.Capture(slider);
         _lastOverlayInteractionUtc = DateTime.UtcNow;
+        _hasPendingTimelineSeek = false;
+        _lastTimelineSeekSeconds = -1d;
+        _lastTimelineSeekUtc = DateTime.MinValue;
     }
 
     private void OnTimelinePointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -257,10 +286,12 @@ public partial class MainWindow : Window
 
         if (_isTimelineDragging)
         {
-            SeekFromTimeline(slider.Value);
+            CommitTimelineSeek(slider.Value);
         }
 
         _isTimelineDragging = false;
+        _timelineSeekTimer.Stop();
+        _hasPendingTimelineSeek = false;
         if (e.Pointer.Captured == slider)
         {
             e.Pointer.Capture(null);
@@ -277,7 +308,9 @@ public partial class MainWindow : Window
         }
 
         _isTimelineDragging = false;
-        SeekFromTimeline(slider.Value);
+        CommitTimelineSeek(slider.Value);
+        _timelineSeekTimer.Stop();
+        _hasPendingTimelineSeek = false;
         ShowOverlayAndRestartIdleTimer();
     }
 
@@ -288,21 +321,109 @@ public partial class MainWindow : Window
             return;
         }
 
-        ViewModel.SeekSeconds = slider.Value;
+        var clamped = ClampTimelineSeconds(slider.Value);
+        ViewModel.SeekSeconds = clamped;
+        QueueTimelineSeek(clamped);
     }
 
     private void SeekFromTimeline(double seconds)
     {
+        var clamped = ClampTimelineSeconds(seconds);
+        ViewModel.SeekSeconds = clamped;
+        Player.Seek(TimeSpan.FromSeconds(clamped));
+    }
+
+    private double ClampTimelineSeconds(double seconds)
+    {
         if (double.IsNaN(seconds) || double.IsInfinity(seconds))
         {
-            return;
+            return 0d;
         }
 
         var durationSeconds = Player.Duration.TotalSeconds;
         var upperBound = durationSeconds > 0d ? durationSeconds : Math.Max(0d, seconds);
-        var clamped = Math.Clamp(seconds, 0d, upperBound);
-        ViewModel.SeekSeconds = clamped;
-        Player.Seek(TimeSpan.FromSeconds(clamped));
+        return Math.Clamp(seconds, 0d, upperBound);
+    }
+
+    private void QueueTimelineSeek(double seconds)
+    {
+        _pendingTimelineSeekSeconds = ClampTimelineSeconds(seconds);
+        _hasPendingTimelineSeek = true;
+        _timelineSeekTimer.Interval = GetTimelineSeekInterval();
+
+        if (!_timelineSeekTimer.IsEnabled)
+        {
+            _timelineSeekTimer.Start();
+        }
+    }
+
+    private void OnTimelineSeekTimerTick()
+    {
+        if (!_isTimelineDragging)
+        {
+            _timelineSeekTimer.Stop();
+            return;
+        }
+
+        if (!_hasPendingTimelineSeek)
+        {
+            return;
+        }
+
+        var now = DateTime.UtcNow;
+        var interval = GetTimelineSeekInterval();
+        if (now - _lastTimelineSeekUtc < interval)
+        {
+            return;
+        }
+
+        var minDelta = GetTimelineSeekMinDeltaSeconds();
+        if (_lastTimelineSeekSeconds >= 0d
+            && Math.Abs(_pendingTimelineSeekSeconds - _lastTimelineSeekSeconds) < minDelta)
+        {
+            return;
+        }
+
+        var target = _pendingTimelineSeekSeconds;
+        _hasPendingTimelineSeek = false;
+        SeekFromTimeline(target);
+        _lastTimelineSeekSeconds = target;
+        _lastTimelineSeekUtc = now;
+    }
+
+    private void CommitTimelineSeek(double seconds)
+    {
+        var clamped = ClampTimelineSeconds(seconds);
+        _hasPendingTimelineSeek = false;
+
+        // Avoid duplicate final seek when the latest drag-tick already landed on the same target.
+        if (_lastTimelineSeekSeconds >= 0d && Math.Abs(_lastTimelineSeekSeconds - clamped) < 0.02d)
+        {
+            ViewModel.SeekSeconds = clamped;
+            return;
+        }
+
+        SeekFromTimeline(clamped);
+        _lastTimelineSeekSeconds = clamped;
+        _lastTimelineSeekUtc = DateTime.UtcNow;
+    }
+
+    private TimeSpan GetTimelineSeekInterval()
+    {
+        return IsSlowSeekBackend() ? TimelineSeekIntervalSlow : TimelineSeekIntervalFast;
+    }
+
+    private double GetTimelineSeekMinDeltaSeconds()
+    {
+        return IsSlowSeekBackend() ? TimelineSeekMinDeltaSlowSeconds : TimelineSeekMinDeltaFastSeconds;
+    }
+
+    private bool IsSlowSeekBackend()
+    {
+        var renderPath = Player.ActiveRenderPath;
+        var decodeApi = Player.ActiveDecodeApi;
+        return renderPath.Contains("ffmpeg", StringComparison.OrdinalIgnoreCase)
+            || decodeApi.Contains("ffmpeg", StringComparison.OrdinalIgnoreCase);
     }
 
     private void TryFitWindowToVideo(int videoWidth, int videoHeight)
@@ -450,6 +571,7 @@ public partial class MainWindow : Window
         if (e.KeyModifiers == KeyModifiers.None && e.Key == Key.Escape && WindowState == WindowState.FullScreen)
         {
             WindowState = WindowState.Normal;
+            UpdateTrafficLightsVisibility(_overlayVisible);
             UpdateControlGlyphs();
             e.Handled = true;
             return;
@@ -524,6 +646,24 @@ public partial class MainWindow : Window
         _overlayVisible = visible;
         OverlayChrome.Opacity = visible ? 1d : 0d;
         OverlayChrome.IsHitTestVisible = visible;
+        UpdateTrafficLightsVisibility(visible);
+    }
+
+    private void UpdateTrafficLightsVisibility(bool hudVisible)
+    {
+        if (!_isMacOs || WindowState == WindowState.FullScreen)
+        {
+            return;
+        }
+
+        var targetHints = hudVisible
+            ? _defaultChromeHints
+            : ExtendClientAreaChromeHints.NoChrome;
+
+        if (ExtendClientAreaChromeHints != targetHints)
+        {
+            ExtendClientAreaChromeHints = targetHints;
+        }
     }
 
     private void UpdateControlGlyphs()
@@ -669,6 +809,42 @@ public partial class MainWindow : Window
             OnToggleAlwaysShowControlsClicked,
             toggleType: NativeMenuItemToggleType.CheckBox);
         viewMenu.Menu.Add(_menuAlwaysShowControlsItem);
+        viewMenu.Menu.Add(new NativeMenuItemSeparator());
+        var rendererMenu = new NativeMenuItem("Renderer")
+        {
+            Menu = new NativeMenu()
+        };
+        _menuRendererAutoItem = CreateNativeMenuItem(
+            "Auto (Metal preferred on macOS)",
+            null,
+            OnRendererAutoClicked,
+            toggleType: NativeMenuItemToggleType.CheckBox);
+        _menuRendererOpenGlItem = CreateNativeMenuItem(
+            "OpenGL",
+            null,
+            OnRendererOpenGlClicked,
+            toggleType: NativeMenuItemToggleType.CheckBox);
+        _menuRendererVulkanItem = CreateNativeMenuItem(
+            "Vulkan",
+            null,
+            OnRendererVulkanClicked,
+            toggleType: NativeMenuItemToggleType.CheckBox);
+        _menuRendererMetalItem = CreateNativeMenuItem(
+            "Metal",
+            null,
+            OnRendererMetalClicked,
+            toggleType: NativeMenuItemToggleType.CheckBox);
+        _menuRendererSoftwareItem = CreateNativeMenuItem(
+            "Software",
+            null,
+            OnRendererSoftwareClicked,
+            toggleType: NativeMenuItemToggleType.CheckBox);
+        rendererMenu.Menu!.Add(_menuRendererAutoItem);
+        rendererMenu.Menu.Add(_menuRendererOpenGlItem);
+        rendererMenu.Menu.Add(_menuRendererVulkanItem);
+        rendererMenu.Menu.Add(_menuRendererMetalItem);
+        rendererMenu.Menu.Add(_menuRendererSoftwareItem);
+        viewMenu.Menu.Add(rendererMenu);
         viewMenu.Menu.Add(new NativeMenuItemSeparator());
         _menuFullscreenItem = CreateNativeMenuItem(
             "Enter Full Screen",
@@ -842,7 +1018,30 @@ public partial class MainWindow : Window
 
     private void OnPreferencesClicked(object? sender, EventArgs e)
     {
-        ViewModel.Status = "No preferences panel yet.";
+        ViewModel.Status = "Use View > Renderer to choose Auto/OpenGL/Vulkan/Metal/Software. Restart required. Runtime video surface uses OpenGL.";
+    }
+
+    private void OnRendererAutoClicked(object? sender, EventArgs e) => ApplyRendererPreference(RendererPreference.Auto);
+
+    private void OnRendererOpenGlClicked(object? sender, EventArgs e) => ApplyRendererPreference(RendererPreference.OpenGl);
+
+    private void OnRendererVulkanClicked(object? sender, EventArgs e) => ApplyRendererPreference(RendererPreference.Vulkan);
+
+    private void OnRendererMetalClicked(object? sender, EventArgs e) => ApplyRendererPreference(RendererPreference.Metal);
+
+    private void OnRendererSoftwareClicked(object? sender, EventArgs e) => ApplyRendererPreference(RendererPreference.Software);
+
+    private void ApplyRendererPreference(RendererPreference preference)
+    {
+        if (!RendererPreferenceState.SavePreference(preference, out var error))
+        {
+            ViewModel.Status = $"Failed to save renderer preference: {error}";
+            return;
+        }
+
+        UpdateNativeMenuState();
+        ViewModel.Status = $"Renderer preference set to {RendererPreferenceState.ToDisplayName(preference)}. Restart app to apply (runtime playback surface uses OpenGL).";
+        ShowOverlayAndRestartIdleTimer();
     }
 
     private void OnNotImplementedMenuClicked(object? sender, EventArgs e)
@@ -951,6 +1150,32 @@ public partial class MainWindow : Window
         if (_menuAlwaysShowControlsItem is not null)
         {
             _menuAlwaysShowControlsItem.IsChecked = _alwaysShowControls;
+        }
+
+        var rendererPreference = RendererPreferenceState.EffectivePreference;
+        if (_menuRendererAutoItem is not null)
+        {
+            _menuRendererAutoItem.IsChecked = rendererPreference == RendererPreference.Auto;
+        }
+
+        if (_menuRendererOpenGlItem is not null)
+        {
+            _menuRendererOpenGlItem.IsChecked = rendererPreference == RendererPreference.OpenGl;
+        }
+
+        if (_menuRendererVulkanItem is not null)
+        {
+            _menuRendererVulkanItem.IsChecked = rendererPreference == RendererPreference.Vulkan;
+        }
+
+        if (_menuRendererMetalItem is not null)
+        {
+            _menuRendererMetalItem.IsChecked = rendererPreference == RendererPreference.Metal;
+        }
+
+        if (_menuRendererSoftwareItem is not null)
+        {
+            _menuRendererSoftwareItem.IsChecked = rendererPreference == RendererPreference.Software;
         }
     }
 
