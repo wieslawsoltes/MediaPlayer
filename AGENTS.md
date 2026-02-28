@@ -32,13 +32,19 @@ The control must be embeddable in normal Avalonia layouts and support overlays (
 - `src/MediaPlayer.Controls/Backends/IMediaBackend.cs`
   - Backend contract.
 - `src/MediaPlayer.Controls/Backends/MacOsNativeMediaBackend.cs`
-  - macOS-native interop profile backend (VideoToolbox with CPU fallback).
+  - macOS native AVFoundation helper backend (non-FFmpeg/non-VLC).
 - `src/MediaPlayer.Controls/Backends/WindowsNativeMediaBackend.cs`
-  - Windows-native interop profile backend (D3D11VA with CPU fallback).
+  - Windows native MediaFoundation helper backend (non-FFmpeg/non-VLC).
+- `src/MediaPlayer.Controls/Backends/NativeFramePumpMediaBackend.cs`
+  - Shared native helper frame-pump backend base (probe/play/frame process orchestration).
+- `src/MediaPlayer.Controls/Backends/MacOsFfmpegProfileMediaBackend.cs`
+  - macOS FFmpeg profile fallback backend (VideoToolbox hint path).
+- `src/MediaPlayer.Controls/Backends/WindowsFfmpegProfileMediaBackend.cs`
+  - Windows FFmpeg profile fallback backend (D3D11VA hint path).
 - `src/MediaPlayer.Controls/Backends/LibVlcMediaBackend.cs`
   - Platform-aware LibVLC backend implementation.
 - `src/MediaPlayer.Controls/Backends/FfmpegMediaBackend.cs`
-  - Generic FFmpeg backend and base implementation used by native interop profile backends.
+  - Generic FFmpeg fallback backend.
 - `src/MediaPlayer.Controls/Rendering/OpenGlVideoRenderer.cs`
   - GPU draw path for video frames.
 - `src/MediaPlayer.Demo/MainWindow.axaml`
@@ -49,12 +55,14 @@ The control must be embeddable in normal Avalonia layouts and support overlays (
 ### Backend Selection Order
 - macOS:
   1. `MacOsNativeMediaBackend`
-  2. `LibVlcMediaBackend`
-  3. `FfmpegMediaBackend`
+  2. `MacOsFfmpegProfileMediaBackend`
+  3. `LibVlcMediaBackend`
+  4. `FfmpegMediaBackend`
 - Windows:
   1. `WindowsNativeMediaBackend`
-  2. `LibVlcMediaBackend`
-  3. `FfmpegMediaBackend`
+  2. `WindowsFfmpegProfileMediaBackend`
+  3. `LibVlcMediaBackend`
+  4. `FfmpegMediaBackend`
 - Linux:
   1. `LibVlcMediaBackend`
   2. `FfmpegMediaBackend`
@@ -64,7 +72,7 @@ The control must be embeddable in normal Avalonia layouts and support overlays (
 - macOS: AVFoundation / VideoToolbox
 - Linux: VAAPI / VDPAU (depends on system drivers)
 
-These are expressed via native interop backend profiles and LibVLC profile metadata.
+These are expressed via native helper backends first, then FFmpeg/LibVLC fallback profiles.
 
 ### Render Strategy
 - Decode callbacks deliver frames to control-owned buffers.
@@ -99,14 +107,21 @@ Always keep video as texture content rendered by Avalonia-owned composition.
 6. Prefer deterministic disposal and explicit event unsubscription.
 
 ## Native Runtime Notes
-- Windows native libs come from `VideoLAN.LibVLC.Windows`.
-- macOS native libs come from `VideoLAN.LibVLC.Mac`.
-- Linux relies on system LibVLC installation (package manager).
-  - Typical prerequisite: `libvlc` and related codec plugins installed.
+- macOS default native backend:
+  - Builds a small AVFoundation frame-pump helper with `xcrun swiftc` on first run.
+  - Caches helper under `~/Library/Application Support/MediaPlayer/native-helpers/macos`.
+  - HTTP/HTTPS sources are cached locally before AVAssetReader playback.
+- Windows default native backend:
+  - Builds a MediaFoundation/WPF frame-pump helper with `dotnet publish` on first run.
+  - Caches helper under `%LOCALAPPDATA%/MediaPlayer/native-helpers/windows`.
+- LibVLC fallbacks:
+  - Windows native libs come from `VideoLAN.LibVLC.Windows`.
+  - macOS native libs come from `VideoLAN.LibVLC.Mac`.
+  - Linux relies on system LibVLC installation.
 
 ### macOS Apple Silicon Note
-`VideoLAN.LibVLC.Mac` package used here provides x64 binaries. On arm64 hosts, LibVLC initialization may fail.
-When this happens, the control automatically falls back to `ffmpeg`/`ffplay` backend so playback still works.
+`VideoLAN.LibVLC.Mac` may still fail on some arm64 hosts due runtime distribution differences.
+The default native AVFoundation backend avoids that dependency and is selected first.
 
 ## Build and Run
 ```bash
@@ -135,7 +150,7 @@ Audio controls in FFmpeg-based backends are limited (volume/mute are not wired i
 
 ## Future Extension Path
 1. Add optional zero-copy GPU interop where backend and platform support it.
-2. Introduce dedicated native backends (Media Foundation/AVFoundation/GStreamer) under `IMediaBackend`.
+2. Replace helper-process transport with in-process native API bindings for lower copy overhead.
 3. Add benchmark and diagnostics hooks for frame timing and drop analysis.
 
 ## Definition of Done for Feature Work

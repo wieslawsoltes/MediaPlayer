@@ -36,6 +36,7 @@ Build a cross-platform Avalonia media player control with:
    - macOS native backend profile: VideoToolbox hardware decode with automatic CPU decode fallback.
    - Windows native backend profile: D3D11VA hardware decode with automatic CPU decode fallback.
    - Preserve no-airspace rendering by always presenting frames through Avalonia-owned GPU surface.
+6. Keep FFmpeg and LibVLC as explicit fallback backends behind the native default path.
 
 ### Phase 3 (advanced optimization)
 1. Introduce optional zero-copy GPU interop path per backend where available.
@@ -44,5 +45,8 @@ Build a cross-platform Avalonia media player control with:
 
 ## Current Status
 - Phase 1 complete.
-- Native interop backend profiles for macOS and Windows implemented and integrated as defaults (with LibVLC/FFmpeg fallback chain retained).
+- Native helper-based non-FFmpeg/non-VLC interop backends implemented and set as defaults on macOS and Windows:
+  - macOS: AVFoundation frame-pump backend (`MacOsNativeMediaBackend`) with URL-to-local caching for AVAssetReader compatibility.
+  - Windows: MediaFoundation/WPF helper backend (`WindowsNativeMediaBackend`) with runtime helper build pipeline.
+- FFmpeg and LibVLC fallback chain retained and ordered after native backends.
 - Solution builds successfully on .NET 9.
