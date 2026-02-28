@@ -1,0 +1,323 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:MediaPlayer.Demo.ViewModels"
+        xmlns:controls="using:MediaPlayer.Controls"
+        xmlns:icons="using:FluentIcons.Avalonia"
+        mc:Ignorable="d"
+        d:DesignWidth="1400"
+        d:DesignHeight="900"
+        x:Class="MediaPlayer.Demo.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        MinWidth="420"
+        MinHeight="260"
+        Background="#000000"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="PreferSystemChrome"
+        ExtendClientAreaTitleBarHeightHint="42"
+        KeyDown="OnWindowKeyDown"
+        Title="Media Player Pro">
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Window.Resources>
+        <ControlTheme x:Key="QuickTimeIconButtonTheme" TargetType="Button">
+            <Setter Property="Width" Value="34" />
+            <Setter Property="Height" Value="34" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="999" />
+            <Setter Property="Background" Value="#00000000" />
+            <Setter Property="BorderBrush" Value="#00000000" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="Chrome"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:pointerover /template/ Border#Chrome">
+                <Setter Property="Background" Value="#33FFFFFF" />
+            </Style>
+            <Style Selector="^:pressed /template/ Border#Chrome">
+                <Setter Property="Background" Value="#4DFFFFFF" />
+            </Style>
+            <Style Selector="^:disabled">
+                <Setter Property="Opacity" Value="0.5" />
+            </Style>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeCapsuleButtonTheme" TargetType="Button">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="CornerRadius" Value="999" />
+            <Setter Property="Background" Value="#5D000000" />
+            <Setter Property="BorderBrush" Value="#66FFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="Chrome"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:pointerover /template/ Border#Chrome">
+                <Setter Property="Background" Value="#7A000000" />
+            </Style>
+            <Style Selector="^:pressed /template/ Border#Chrome">
+                <Setter Property="Background" Value="#95000000" />
+            </Style>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeSliderTrackTheme" TargetType="RepeatButton">
+            <Setter Property="Background" Value="#59FFFFFF" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="999" />
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeTimelineThumbTheme" TargetType="Thumb">
+            <Setter Property="Width" Value="11" />
+            <Setter Property="Height" Value="11" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="ThumbChrome"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Background="#FFFFFFFF"
+                            CornerRadius="999" />
+                </ControlTemplate>
+            </Setter>
+            <Style Selector="^:pointerover /template/ Border#ThumbChrome">
+                <Setter Property="Background" Value="#F2F2F2" />
+            </Style>
+            <Style Selector="^:pressed /template/ Border#ThumbChrome">
+                <Setter Property="Background" Value="#E6E6E6" />
+            </Style>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeVolumeThumbTheme" TargetType="Thumb">
+            <Setter Property="Width" Value="9" />
+            <Setter Property="Height" Value="9" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border x:Name="ThumbChrome"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Background="#FFFFFFFF"
+                            CornerRadius="999" />
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeTimelineSliderTheme" TargetType="Slider">
+            <Setter Property="Height" Value="16" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
+            <Setter Property="Background" Value="#61FFFFFF" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid VerticalAlignment="Center">
+                        <Track Name="PART_Track"
+                               Minimum="{TemplateBinding Minimum}"
+                               Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value}"
+                               Orientation="{TemplateBinding Orientation}">
+                            <Track.DecreaseButton>
+                                <RepeatButton Theme="{StaticResource QuickTimeSliderTrackTheme}"
+                                              Background="{TemplateBinding Foreground}" />
+                            </Track.DecreaseButton>
+                            <Track.Thumb>
+                                <Thumb Theme="{StaticResource QuickTimeTimelineThumbTheme}" />
+                            </Track.Thumb>
+                            <Track.IncreaseButton>
+                                <RepeatButton Theme="{StaticResource QuickTimeSliderTrackTheme}"
+                                              Background="{TemplateBinding Background}" />
+                            </Track.IncreaseButton>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+
+        <ControlTheme x:Key="QuickTimeVolumeSliderTheme" TargetType="Slider">
+            <Setter Property="Width" Value="78" />
+            <Setter Property="Height" Value="14" />
+            <Setter Property="Foreground" Value="#B9D5FF" />
+            <Setter Property="Background" Value="#66FFFFFF" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid VerticalAlignment="Center">
+                        <Track Name="PART_Track"
+                               Minimum="{TemplateBinding Minimum}"
+                               Maximum="{TemplateBinding Maximum}"
+                               Value="{TemplateBinding Value}"
+                               Orientation="{TemplateBinding Orientation}">
+                            <Track.DecreaseButton>
+                                <RepeatButton Theme="{StaticResource QuickTimeSliderTrackTheme}"
+                                              Background="{TemplateBinding Foreground}" />
+                            </Track.DecreaseButton>
+                            <Track.Thumb>
+                                <Thumb Theme="{StaticResource QuickTimeVolumeThumbTheme}" />
+                            </Track.Thumb>
+                            <Track.IncreaseButton>
+                                <RepeatButton Theme="{StaticResource QuickTimeSliderTrackTheme}"
+                                              Background="{TemplateBinding Background}" />
+                            </Track.IncreaseButton>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </Window.Resources>
+
+    <Grid ClipToBounds="True"
+          PointerMoved="OnPlayerSurfacePointerMoved"
+          PointerPressed="OnPlayerSurfacePointerPressed"
+          PointerWheelChanged="OnPlayerSurfacePointerWheelChanged">
+        <controls:GpuMediaPlayer x:Name="Player"
+                                 Source="{Binding SourceUri}"
+                                 AutoPlay="{Binding AutoPlay}"
+                                 IsMuted="{Binding IsMuted}"
+                                 IsLooping="{Binding IsLooping}"
+                                 Volume="{Binding Volume}" />
+
+        <Grid x:Name="OverlayChrome"
+              Opacity="1">
+            <Grid.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" />
+                </Transitions>
+            </Grid.Transitions>
+
+            <Border VerticalAlignment="Bottom"
+                    x:Name="QuickHud"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,24"
+                    Padding="11,8"
+                    CornerRadius="13"
+                    MinWidth="410"
+                    Background="#A56A6A6A"
+                    BorderBrush="#85FFFFFF"
+                    BorderThickness="1"
+                    PointerEntered="OnHudPointerEntered"
+                    PointerExited="OnHudPointerExited">
+                <Grid RowDefinitions="Auto,1,Auto"
+                      RowSpacing="4">
+                    <Grid Grid.Row="0"
+                          ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto"
+                          ColumnSpacing="2"
+                          VerticalAlignment="Center">
+                        <Button Grid.Column="0"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Mute"
+                                Click="OnToggleMuteClicked">
+                            <icons:SymbolIcon x:Name="VolumeIcon"
+                                              VerticalAlignment="Center"
+                                              Foreground="#FFFFFF"
+                                              Symbol="Speaker2"
+                                              FontSize="14" />
+                        </Button>
+                        <Slider Grid.Column="1"
+                                Theme="{StaticResource QuickTimeVolumeSliderTheme}"
+                                Minimum="0"
+                                Maximum="100"
+                                Value="{Binding Volume}" />
+
+                        <Button Grid.Column="2"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Back 10s"
+                                Click="OnSeekBack10Clicked">
+                            <icons:SymbolIcon Symbol="SkipBack10" FontSize="17" />
+                        </Button>
+                        <Button Grid.Column="3"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Play/Pause"
+                                Click="OnPlayPauseClicked">
+                            <icons:SymbolIcon x:Name="PlayPauseIcon" Symbol="Play" FontSize="19" />
+                        </Button>
+                        <Button Grid.Column="4"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Forward 10s"
+                                Click="OnSeekForward10Clicked">
+                            <icons:SymbolIcon Symbol="SkipForward10" FontSize="17" />
+                        </Button>
+
+                        <Button Grid.Column="6"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Loop"
+                                Click="OnToggleLoopClicked">
+                            <icons:SymbolIcon x:Name="LoopIcon" Symbol="ArrowRepeatAll" FontSize="16" />
+                        </Button>
+                        <Button Grid.Column="7"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Open media"
+                                Click="OnOpenFileClicked">
+                            <icons:SymbolIcon Symbol="Open" FontSize="16" />
+                        </Button>
+                        <Button Grid.Column="8"
+                                Theme="{StaticResource QuickTimeIconButtonTheme}"
+                                ToolTip.Tip="Toggle full screen"
+                                Click="OnToggleFullScreenClicked">
+                            <icons:SymbolIcon x:Name="FullScreenIcon" Symbol="FullScreenMaximize" FontSize="16" />
+                        </Button>
+                    </Grid>
+
+                    <Border Grid.Row="1"
+                            Height="1"
+                            Background="#66FFFFFF" />
+
+                    <Grid Grid.Row="2"
+                          ColumnDefinitions="Auto,*,Auto"
+                          ColumnSpacing="8">
+                        <TextBlock Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   Foreground="#F0F0F0"
+                                   FontSize="11"
+                                   Text="{Binding Position, ElementName=Player, StringFormat={}{0:hh\\:mm\\:ss}}" />
+                        <Slider x:Name="TimelineSlider"
+                                Grid.Column="1"
+                                Theme="{StaticResource QuickTimeTimelineSliderTheme}"
+                                Minimum="0"
+                                Maximum="1"
+                                ValueChanged="OnTimelineValueChanged"
+                                PointerPressed="OnTimelinePointerPressed"
+                                PointerReleased="OnTimelinePointerReleased"
+                                PointerCaptureLost="OnTimelinePointerCaptureLost" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Foreground="#E3E3E3"
+                                   FontSize="11"
+                                   Text="{Binding Duration, ElementName=Player, StringFormat={}{0:hh\\:mm\\:ss}}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
