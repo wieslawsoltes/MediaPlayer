@@ -11,6 +11,12 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.3.12" />
     <PackageReference Include="LibVLCSharp" Version="3.9.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MediaPlayer.Native.Abstractions\MediaPlayer.Native.Abstractions.csproj" />
+    <ProjectReference Include="..\MediaPlayer.Native.Interop\MediaPlayer.Native.Interop.csproj" />
   </ItemGroup>
 
 </Project>
