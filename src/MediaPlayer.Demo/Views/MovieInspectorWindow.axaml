@@ -1,0 +1,141 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:MediaPlayer.Demo.ViewModels"
+        x:Class="MediaPlayer.Demo.Views.MovieInspectorWindow"
+        x:DataType="vm:MovieInspectorViewModel"
+        Width="620"
+        Height="620"
+        MinWidth="620"
+        MinHeight="510"
+        CanResize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Title="Movie Inspector"
+        Background="#171717"
+        Foreground="#F4F4F4"
+        mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:MovieInspectorViewModel MediaName="BigBuckBunny.mp4"
+                                    MediaLocation="/Users/example/Movies/BigBuckBunny.mp4"
+                                    MediaType="MP4"
+                                    FileSize="150.2 MB"
+                                    Resolution="1920 x 1080"
+                                    AspectRatio="16:9"
+                                    Duration="00:09:56"
+                                    CurrentPosition="00:00:45"
+                                    FrameRate="24 fps"
+                                    PlaybackRate="1x"
+                                    BackendProfile="macOS Native AVFoundation"
+                                    DecodePipeline="AVFoundation/VideoToolbox (native GPU decode, CPU fallback by platform)"
+                                    RenderPipeline="AVFoundation frame output -> managed BGRA frame pump -> Avalonia OpenGL texture"
+                                    RendererPreference="Auto (effective: Metal)"
+                                    NativeProviderMode="AutoPreferInterop"
+                                    PlaybackProvider="LegacyHelper"
+                                    WorkflowProvider="LegacyHelper"
+                                    NativeFallbackReason="None"
+                                    AudioCapabilities="Volume, Mute, Track List, Track Select"
+                                    AudioOutputDevices="2"
+                                    AudioInputDevices="1"
+                                    AudioOutputRoute="Default"
+                                    AudioInputRoute="Default"
+                                    BackendCapabilityTable="Managed Interop (LibVLC): Volume, Mute, Track List, Track Select | macOS Native Helper: Volume, Mute | macOS FFmpeg native profile: Volume, Mute, Track List, Track Select"
+                                    LastError="None" />
+    </Design.DataContext>
+
+    <Border Margin="12"
+            Padding="16"
+            Background="#2A2A2A"
+            CornerRadius="14"
+            BorderBrush="#44FFFFFF"
+            BorderThickness="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Spacing="14">
+                <TextBlock Text="Movie Inspector"
+                           FontSize="24"
+                           FontWeight="SemiBold" />
+
+                <Grid ColumnDefinitions="170,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                      RowSpacing="8"
+                      ColumnSpacing="12">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding MediaName}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Location" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MediaLocation}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Type" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding MediaType}" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="File Size" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FileSize}" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Resolution" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Resolution}" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Aspect Ratio" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding AspectRatio}" />
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Duration" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Duration}" />
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Current Position" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding CurrentPosition}" />
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Frame Rate" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding FrameRate}" />
+
+                    <TextBlock Grid.Row="9" Grid.Column="0" Text="Playback Rate" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding PlaybackRate}" />
+
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Backend Profile" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding BackendProfile}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="11" Grid.Column="0" Text="Decode Pipeline" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="11" Grid.Column="1" Text="{Binding DecodePipeline}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="12" Grid.Column="0" Text="Render Pipeline" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="12" Grid.Column="1" Text="{Binding RenderPipeline}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="13" Grid.Column="0" Text="Renderer Preference" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="13" Grid.Column="1" Text="{Binding RendererPreference}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="14" Grid.Column="0" Text="Native Mode" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="14" Grid.Column="1" Text="{Binding NativeProviderMode}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="15" Grid.Column="0" Text="Playback Provider" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="15" Grid.Column="1" Text="{Binding PlaybackProvider}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="16" Grid.Column="0" Text="Workflow Provider" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="16" Grid.Column="1" Text="{Binding WorkflowProvider}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="17" Grid.Column="0" Text="Native Fallback" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="17" Grid.Column="1" Text="{Binding NativeFallbackReason}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="18" Grid.Column="0" Text="Audio Capabilities" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="18" Grid.Column="1" Text="{Binding AudioCapabilities}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="19" Grid.Column="0" Text="Audio Outputs" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="19" Grid.Column="1" Text="{Binding AudioOutputDevices}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="20" Grid.Column="0" Text="Audio Inputs" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="20" Grid.Column="1" Text="{Binding AudioInputDevices}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="21" Grid.Column="0" Text="Output Route" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="21" Grid.Column="1" Text="{Binding AudioOutputRoute}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="22" Grid.Column="0" Text="Input Route" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="22" Grid.Column="1" Text="{Binding AudioInputRoute}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="23" Grid.Column="0" Text="Backend Table" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="23" Grid.Column="1" Text="{Binding BackendCapabilityTable}" TextWrapping="Wrap" />
+
+                    <TextBlock Grid.Row="24" Grid.Column="0" Text="Last Error" Foreground="#CFCFCF" />
+                    <TextBlock Grid.Row="24" Grid.Column="1" Text="{Binding LastError}" TextWrapping="Wrap" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
+</Window>

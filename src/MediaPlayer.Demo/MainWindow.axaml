@@ -231,7 +231,7 @@
                 <Grid RowDefinitions="Auto,1,Auto"
                       RowSpacing="4">
                     <Grid Grid.Row="0"
-                          ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto"
+                          ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto,Auto,Auto,Auto"
                           ColumnSpacing="2"
                           VerticalAlignment="Center">
                         <Button Grid.Column="0"
@@ -270,18 +270,26 @@
                         </Button>
 
                         <Button Grid.Column="6"
+                                x:Name="SpeedButton"
+                                Theme="{StaticResource QuickTimeCapsuleButtonTheme}"
+                                MinWidth="54"
+                                Height="28"
+                                ToolTip.Tip="Playback speed"
+                                Click="OnCyclePlaybackRateClicked"
+                                Content="1x" />
+                        <Button Grid.Column="7"
                                 Theme="{StaticResource QuickTimeIconButtonTheme}"
                                 ToolTip.Tip="Loop"
                                 Click="OnToggleLoopClicked">
                             <icons:SymbolIcon x:Name="LoopIcon" Symbol="ArrowRepeatAll" FontSize="16" />
                         </Button>
-                        <Button Grid.Column="7"
+                        <Button Grid.Column="8"
                                 Theme="{StaticResource QuickTimeIconButtonTheme}"
                                 ToolTip.Tip="Open media"
                                 Click="OnOpenFileClicked">
                             <icons:SymbolIcon Symbol="Open" FontSize="16" />
                         </Button>
-                        <Button Grid.Column="8"
+                        <Button Grid.Column="9"
                                 Theme="{StaticResource QuickTimeIconButtonTheme}"
                                 ToolTip.Tip="Toggle full screen"
                                 Click="OnToggleFullScreenClicked">
@@ -297,10 +305,12 @@
                           ColumnDefinitions="Auto,*,Auto"
                           ColumnSpacing="8">
                         <TextBlock Grid.Column="0"
+                                   x:Name="PositionDisplayText"
                                    VerticalAlignment="Center"
                                    Foreground="#F0F0F0"
                                    FontSize="11"
-                                   Text="{Binding Position, ElementName=Player, StringFormat={}{0:hh\\:mm\\:ss}}" />
+                                   PointerPressed="OnTimeDisplayPointerPressed"
+                                   Text="00:00:00" />
                         <Slider x:Name="TimelineSlider"
                                 Grid.Column="1"
                                 Theme="{StaticResource QuickTimeTimelineSliderTheme}"
@@ -308,10 +318,12 @@
                                 Maximum="1"
                                 ValueChanged="OnTimelineValueChanged" />
                         <TextBlock Grid.Column="2"
+                                   x:Name="DurationDisplayText"
                                    VerticalAlignment="Center"
                                    Foreground="#E3E3E3"
                                    FontSize="11"
-                                   Text="{Binding Duration, ElementName=Player, StringFormat={}{0:hh\\:mm\\:ss}}" />
+                                   PointerPressed="OnTimeDisplayPointerPressed"
+                                   Text="00:00:00" />
                     </Grid>
                 </Grid>
             </Border>

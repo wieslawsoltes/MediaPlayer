@@ -1,0 +1,139 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="using:MediaPlayer.Demo.Controls"
+        xmlns:vm="using:MediaPlayer.Demo.ViewModels"
+        x:Class="MediaPlayer.Demo.Views.ClipArrangeWindow"
+        x:DataType="vm:ClipArrangeWindowViewModel"
+        Width="780"
+        Height="520"
+        MinWidth="700"
+        MinHeight="460"
+        CanResize="True"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Title="Arrange Clips"
+        Background="#141414"
+        Foreground="#F2F2F2"
+        mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:ClipArrangeWindowViewModel />
+    </Design.DataContext>
+
+    <Border Margin="14"
+            Padding="14"
+            Background="#252525"
+            CornerRadius="14"
+            BorderBrush="#45FFFFFF"
+            BorderThickness="1">
+        <Grid RowDefinitions="Auto,Auto,*,Auto"
+              RowSpacing="12">
+            <TextBlock Grid.Row="0"
+                       Text="Arrange Clips"
+                       FontSize="24"
+                       FontWeight="SemiBold" />
+
+            <TextBlock Grid.Row="1"
+                       Foreground="#CFCFCF"
+                       Text="Reorder clips before combining. The final render follows top-to-bottom order."
+                       TextWrapping="Wrap" />
+
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="*,140"
+                  ColumnSpacing="12">
+                <controls:ClipReorderListBox Grid.Column="0"
+                                             ItemsSource="{Binding Clips}"
+                                             SelectedItem="{Binding SelectedClip}"
+                                             ReorderCommand="{Binding ReorderByDragCommand}"
+                                             Background="#121212"
+                                             BorderBrush="#37FFFFFF"
+                                             BorderThickness="1"
+                                             CornerRadius="10"
+                                             Padding="8">
+                    <controls:ClipReorderListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:ClipArrangeItemViewModel">
+                            <Border Margin="0,0,0,8"
+                                    Padding="10"
+                                    Background="#2C2C2C"
+                                    BorderBrush="#32FFFFFF"
+                                    BorderThickness="1"
+                                    CornerRadius="8">
+                                <Grid ColumnDefinitions="44,*,Auto"
+                                      ColumnSpacing="12">
+                                    <Border Grid.Column="0"
+                                            Width="34"
+                                            Height="34"
+                                            CornerRadius="17"
+                                            Background="#4E4E4E"
+                                            VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Order}"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   FontSize="13"
+                                                   FontWeight="SemiBold" />
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1"
+                                                Spacing="2">
+                                        <TextBlock Text="{Binding FileName}"
+                                                   FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Path}"
+                                                   FontSize="11"
+                                                   Foreground="#B8B8B8"
+                                                   TextWrapping="Wrap" />
+                                    </StackPanel>
+
+                                    <Border Grid.Column="2"
+                                            Width="74"
+                                            Height="8"
+                                            CornerRadius="999"
+                                            Background="#63A8FF"
+                                            VerticalAlignment="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </controls:ClipReorderListBox.ItemTemplate>
+                </controls:ClipReorderListBox>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="8"
+                            VerticalAlignment="Top">
+                    <Button Content="Move Up"
+                            Command="{Binding MoveUpCommand}" />
+                    <Button Content="Move Down"
+                            Command="{Binding MoveDownCommand}" />
+                    <Button Content="Remove"
+                            Command="{Binding RemoveCommand}" />
+                    <Border Height="1"
+                            Margin="0,6,0,6"
+                            Background="#30FFFFFF" />
+                    <Button Content="Insert Before…"
+                            Command="{Binding RequestInsertBeforeCommand}" />
+                    <Button Content="Append Clips…"
+                            Command="{Binding RequestAppendCommand}" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="3"
+                  ColumnDefinitions="*,Auto,Auto"
+                  ColumnSpacing="10">
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Foreground="#B8B8B8"
+                           Text="Use Move Up/Down or Insert/Append to build final composition order before combining." />
+                <Button Grid.Column="1"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        MinWidth="90" />
+                <Button Grid.Column="2"
+                        Content="Combine"
+                        Command="{Binding CombineCommand}"
+                        IsEnabled="{Binding CanCombine}"
+                        MinWidth="96" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
