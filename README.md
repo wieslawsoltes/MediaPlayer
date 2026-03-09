@@ -164,4 +164,4 @@ plan/
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/wieslawsoltes/MediaPlayer/blob/main/LICENSE).

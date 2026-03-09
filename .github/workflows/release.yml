@@ -109,8 +109,8 @@ jobs:
         shell: bash
         run: |
           if [ -z "${NUGET_API_KEY}" ]; then
-            echo "NUGET_API_KEY is not configured. Skipping NuGet publish."
-            exit 0
+            echo "::error::NUGET_API_KEY is not configured for tag release publishing."
+            exit 1
           fi
           dotnet nuget push "artifacts/packages/*.nupkg" --api-key "${NUGET_API_KEY}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           dotnet nuget push "artifacts/packages/*.snupkg" --api-key "${NUGET_API_KEY}" --source https://api.nuget.org/v3/index.json --skip-duplicate
