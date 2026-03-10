@@ -1,0 +1,6 @@
+docs:
+  - {path: readme.md, title: "Overview", self: true}
+  - {path: architecture-and-packages.md, title: "Architecture and Packages"}
+  - {path: backend-selection.md, title: "Backend Selection"}
+  - {path: rendering-no-airspace.md, title: "Rendering Without Airspace"}
+  - {path: audio-capabilities-and-sync.md, title: "Audio Capabilities and Sync"}

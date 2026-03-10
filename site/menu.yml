@@ -1,0 +1,8 @@
+home:
+  - {path: readme.md, title: "<i class='bi bi-house-door' aria-hidden='true'></i> Home", self: true}
+  - {path: articles/readme.md, title: "<i class='bi bi-book' aria-hidden='true'></i> Docs", folder: true}
+  - {path: api/readme.md, title: "<i class='bi bi-braces' aria-hidden='true'></i> API", folder: true}
+
+home2:
+  - {url: "https://github.com/wieslawsoltes/MediaPlayer", title: "<i class='bi bi-github'></i> GitHub", link_class: "btn btn-info"}
+  - {url: "https://www.nuget.org/packages/MediaPlayer.Controls", title: "<i class='bi bi-box-seam'></i> NuGet", link_class: "btn btn-outline-secondary"}

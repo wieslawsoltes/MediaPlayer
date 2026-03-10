@@ -1,0 +1,6 @@
+docs:
+  - {path: readme.md, title: "Overview", self: true}
+  - {path: overview.md, title: "Overview"}
+  - {path: installation.md, title: "Installation"}
+  - {path: quickstart-player.md, title: "Quickstart: Player Control"}
+  - {path: quickstart-workflows.md, title: "Quickstart: Workflow Services"}

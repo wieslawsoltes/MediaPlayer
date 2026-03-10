@@ -1,0 +1,9 @@
+main h1,
+main h2,
+main h3 {
+  scroll-margin-top: 6rem;
+}
+
+main .btn i {
+  margin-right: 0.35rem;
+}
