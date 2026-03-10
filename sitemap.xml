@@ -1,59 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/packages-and-assemblies</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/native-provider-modes</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/diagnostics-and-debugging</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/rendering-no-airspace</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
     <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/backend-and-provider-selection</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/lunet-docs-pipeline</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/quicktime-shell-composition</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/backend-selection</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-workflows</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -65,7 +13,15 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/audio-capabilities-and-sync</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -73,11 +29,39 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/installation</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/license</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/license</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-workflows</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/lunet-docs-pipeline</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/native-provider-modes</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/packages-and-assemblies</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/backend-and-provider-selection</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/quicktime-shell-composition</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/diagnostics-and-debugging</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -85,7 +69,23 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/backend-selection</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/rendering-no-airspace</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/audio-capabilities-and-sync</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
     <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/workflow-composition</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/installation</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
 </urlset>
