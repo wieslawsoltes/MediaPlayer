@@ -1,11 +1,14 @@
 # MediaPlayer
 
 [![CI](https://github.com/wieslawsoltes/MediaPlayer/actions/workflows/ci.yml/badge.svg)](https://github.com/wieslawsoltes/MediaPlayer/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-github%20pages-0f766e)](https://wieslawsoltes.github.io/MediaPlayer/)
 ![.NET 9](https://img.shields.io/badge/.NET-9.0-512BD4)
 ![Avalonia 11](https://img.shields.io/badge/Avalonia-11.3-0F172A)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 GPU-accelerated media playback for Avalonia with no airspace gap, native platform backends, FFmpeg and LibVLC fallback paths, and a reusable QuickTime-inspired application layer.
+
+Documentation site: [wieslawsoltes.github.io/MediaPlayer](https://wieslawsoltes.github.io/MediaPlayer/)
 
 ## NuGet Packages
 

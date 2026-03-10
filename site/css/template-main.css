@@ -1,0 +1,13 @@
+:root {
+  --mp-hero-border: rgba(59, 130, 246, 0.18);
+  --mp-card-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+}
+
+main .card {
+  border-color: var(--mp-hero-border);
+  box-shadow: var(--mp-card-shadow);
+}
+
+main code {
+  white-space: nowrap;
+}

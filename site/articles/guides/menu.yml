@@ -1,0 +1,6 @@
+docs:
+  - {path: readme.md, title: "Overview", self: true}
+  - {path: quicktime-shell-composition.md, title: "QuickTime-style Shell Composition"}
+  - {path: backend-and-provider-selection.md, title: "Backend and Provider Selection"}
+  - {path: workflow-composition.md, title: "Workflow Composition"}
+  - {path: diagnostics-and-debugging.md, title: "Diagnostics and Debugging"}

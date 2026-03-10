@@ -56,10 +56,40 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+  docs-build:
+    name: Docs Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+            9.0.x
+
+      - name: Restore local tools
+        run: dotnet tool restore
+
+      - name: Build docs
+        run: |
+          chmod +x build-docs.sh
+          ./build-docs.sh
+
+      - name: Upload docs preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-preview
+          path: site/.lunet/build/www/
+          if-no-files-found: error
+          retention-days: 7
+
   pack-preview:
     name: Pack Preview
     runs-on: ubuntu-latest
-    needs: build-test
+    needs: [build-test, docs-build]
     steps:
       - name: Checkout
         uses: actions/checkout@v4

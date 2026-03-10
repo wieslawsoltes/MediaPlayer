@@ -1,0 +1,6 @@
+docs:
+  - {path: readme.md, title: "Overview", self: true}
+  - {path: packages-and-assemblies.md, title: "Packages and Assemblies"}
+  - {path: native-provider-modes.md, title: "Native Provider Modes"}
+  - {path: lunet-docs-pipeline.md, title: "Lunet Docs Pipeline"}
+  - {path: license.md, title: "License"}
