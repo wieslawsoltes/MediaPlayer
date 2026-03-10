@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-player</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/overview</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/license</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -21,19 +13,19 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/backend-and-provider-selection</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
     <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/architecture-and-packages</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/license</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-workflows</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/installation</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -41,23 +33,19 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/native-provider-modes</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
     <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/overview</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/native-provider-modes</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
     <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/reference/packages-and-assemblies</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/backend-and-provider-selection</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/quicktime-shell-composition</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -69,11 +57,7 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/backend-selection</loc>
-    <lastmod>2026-03-10</lastmod>
-  </url>
-  <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/rendering-no-airspace</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/guides/quicktime-shell-composition</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
@@ -85,7 +69,23 @@
     <lastmod>2026-03-10</lastmod>
   </url>
   <url>
-    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/installation</loc>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-workflows</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/architecture-and-packages</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/backend-selection</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/getting-started/quickstart-player</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://wieslawsoltes.github.io/MediaPlayer/MediaPlayer/articles/concepts/rendering-no-airspace</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
 </urlset>
