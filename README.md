@@ -10,6 +10,8 @@ GPU-accelerated media playback for Avalonia with no airspace gap, native platfor
 
 Documentation site: [wieslawsoltes.github.io/MediaPlayer](https://wieslawsoltes.github.io/MediaPlayer/)
 
+<img width="3510" height="2034" alt="image" src="https://github.com/user-attachments/assets/75d0bfb4-f85e-4c40-a5a1-b98e9e9e8a43" />
+
 ## NuGet Packages
 
 ### Primary Packages
