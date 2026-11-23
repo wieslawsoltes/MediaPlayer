@@ -147,12 +147,29 @@ dotnet pack src/MediaPlayer.Native.Interop/MediaPlayer.Native.Interop.csproj -c 
 
 ## CI and Release
 
-The repository includes GitHub Actions workflows modeled on the RoyalTerminal repository:
+The repository includes GitHub Actions workflows modeled on the RoyalTerminal repository.
 
-- `ci.yml`: multi-platform restore, build, test, and preview package generation.
-- `release.yml`: tag-driven validation, package creation, optional NuGet publication, and GitHub release creation.
+- `ci.yml` restores, builds, and tests across platforms and creates preview packages.
+- `release.yml` validates and packs the solution. A release tag publishes the packages and symbols to NuGet.org, then creates a GitHub release. A manual run on a branch creates preview artifacts.
 
-Release tags use the `v*` format, for example `v0.1.0`.
+### NuGet Trusted Publishing
+
+The NuGet publishing job uses the `nuget` GitHub environment. The environment accepts only `v*` tags and its `NUGET_USER` variable contains the NuGet.org username. The job exchanges its GitHub OIDC token for a temporary NuGet API key.
+
+Use these values when you create the NuGet.org policy. [NuGet.org Trusted Publishing](https://www.nuget.org/account/trustedpublishing)
+
+| Field | Value |
+| --- | --- |
+| Policy Name | `MediaPlayer releases` |
+| Package Owner | `wieslawsoltes` |
+| CI/CD Provider | GitHub Actions |
+| Repository Owner | `wieslawsoltes` |
+| Repository | `MediaPlayer` |
+| Workflow File | `release.yml` |
+| Environment | `nuget` |
+| Scopes | Push only new package versions |
+
+Enter `MediaPlayer.Controls`, `MediaPlayer.Native.Abstractions`, and `MediaPlayer.Native.Interop` on separate lines in **Glob Patterns and Packages**. Once the policy is active, push a version tag such as `v12.2.0` from `main`.
 
 ## Project Structure
 
