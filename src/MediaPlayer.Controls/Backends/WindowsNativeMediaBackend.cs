@@ -140,8 +140,6 @@ internal sealed class WindowsNativeMediaBackend : NativeFramePumpMediaBackend
             psi.ArgumentList.Add(projectPath);
             psi.ArgumentList.Add("-c");
             psi.ArgumentList.Add("Release");
-            psi.ArgumentList.Add("-f");
-            psi.ArgumentList.Add("net9.0-windows");
             psi.ArgumentList.Add("-p:UseWPF=true");
             psi.ArgumentList.Add("-p:EnableWindowsTargeting=true");
             psi.ArgumentList.Add("-o");
@@ -178,7 +176,7 @@ internal sealed class WindowsNativeMediaBackend : NativeFramePumpMediaBackend
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
