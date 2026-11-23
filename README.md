@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/wieslawsoltes/MediaPlayer/actions/workflows/ci.yml/badge.svg)](https://github.com/wieslawsoltes/MediaPlayer/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-github%20pages-0f766e)](https://wieslawsoltes.github.io/MediaPlayer/)
-![.NET 9](https://img.shields.io/badge/.NET-9.0-512BD4)
-![Avalonia 11](https://img.shields.io/badge/Avalonia-11.3-0F172A)
+![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)
+![Avalonia 12.2](https://img.shields.io/badge/Avalonia-12.2-0F172A)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 GPU-accelerated media playback for Avalonia with no airspace gap, native platform backends, FFmpeg and LibVLC fallback paths, and a reusable QuickTime-inspired application layer.
@@ -132,7 +132,7 @@ dotnet run --project src/MediaPlayer.Demo/MediaPlayer.Demo.csproj
 
 ### Prerequisites
 
-- .NET SDK 9.0 or later
+- .NET 10 SDK or later
 - Platform-native media dependencies required by the backend modes you enable at runtime
 
 ### Build, test, and pack

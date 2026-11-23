@@ -49,4 +49,4 @@ Build a cross-platform Avalonia media player control with:
   - macOS: AVFoundation frame-pump backend (`MacOsNativeMediaBackend`) with URL-to-local caching for AVAssetReader compatibility.
   - Windows: MediaFoundation/WPF helper backend (`WindowsNativeMediaBackend`) with runtime helper build pipeline.
 - FFmpeg and LibVLC fallback chain retained and ordered after native backends.
-- Solution builds successfully on .NET 9.
+- The solution targets .NET 10 and uses Avalonia 12.2.
