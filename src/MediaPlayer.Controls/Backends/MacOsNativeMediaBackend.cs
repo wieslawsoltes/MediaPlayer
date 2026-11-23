@@ -50,18 +50,30 @@ internal sealed class MacOsNativeMediaBackend : NativeFramePumpMediaBackend
                 "macos");
             Directory.CreateDirectory(helperRoot);
 
-            var sourcePath = Path.Combine(helperRoot, "avfoundation-frame-pump.swift");
-            var binaryPath = Path.Combine(helperRoot, "avfoundation-frame-pump");
-            File.WriteAllText(sourcePath, SwiftHelperSource);
-
-            if (!File.Exists(binaryPath)
-                || File.GetLastWriteTimeUtc(binaryPath) < File.GetLastWriteTimeUtc(sourcePath))
+            var sourceHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(SwiftHelperSource)));
+            var binaryPath = Path.Combine(helperRoot, $"avfoundation-frame-pump-{sourceHash}");
+            if (!File.Exists(binaryPath))
             {
-                if (!TryCompileSwiftHelper(sourcePath, binaryPath, out var buildError))
+                // Build in a private directory on the cache volume so publication is atomic.
+                var buildRoot = Directory.CreateDirectory(Path.Combine(helperRoot, $"build-{Guid.NewGuid():N}")).FullName;
+                try
                 {
-                    s_helperBuildError = buildError;
-                    error = buildError;
-                    return false;
+                    var sourcePath = Path.Combine(buildRoot, "avfoundation-frame-pump.swift");
+                    var outputPath = Path.Combine(buildRoot, "avfoundation-frame-pump");
+                    File.WriteAllText(sourcePath, SwiftHelperSource);
+
+                    if (!TryCompileSwiftHelper(sourcePath, outputPath, out var buildError))
+                    {
+                        s_helperBuildError = buildError;
+                        error = buildError;
+                        return false;
+                    }
+
+                    File.Move(outputPath, binaryPath, overwrite: true);
+                }
+                finally
+                {
+                    Directory.Delete(buildRoot, recursive: true);
                 }
             }
 
