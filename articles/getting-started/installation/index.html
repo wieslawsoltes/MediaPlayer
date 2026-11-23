@@ -12,13 +12,13 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@wieslawsoltes">
 <meta name="twitter:title" content="Installation | MediaPlayer for Avalonia">
-<meta name="twitter:description" content="Installation Add the primary package dotnet add package MediaPlayer.Controls Add provider-contract packages when you need composition control dotnet add package MediaPlayer.Native.Abstractions dotnet add package MediaPlayer.Native.Interop Runtime prerequisites .NET 9 SDK or runtime for build and execution. Avalonia 11.x application host. Platform media dependencies for the backend modes you enable at runtime. FFmpeg and LibVLC only when you intentionally use those fallback paths. Recommended first validation...">
+<meta name="twitter:description" content="Installation Add the primary package dotnet add package MediaPlayer.Controls Add provider-contract packages when you need composition control dotnet add package MediaPlayer.Native.Abstractions dotnet add package MediaPlayer.Native.Interop Runtime prerequisites .NET 10 SDK to build and .NET 10 runtime to run. An Avalonia 12.2 application host. The Windows native playback backend uses the .NET SDK to build its helper and the .NET 10 Desktop Runtime to run it....">
 <meta name="twitter:image" content="https://wieslawsoltes.github.io/MediaPlayer/images/logo.svg">
 <meta name="twitter:image:alt" content="Installation | MediaPlayer for Avalonia">
 <meta property="og:title" content="Installation | MediaPlayer for Avalonia">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://wieslawsoltes.github.io/MediaPlayer">
-<meta property="og:description" content="Installation Add the primary package dotnet add package MediaPlayer.Controls Add provider-contract packages when you need composition control dotnet add package MediaPlayer.Native.Abstractions dotnet add package MediaPlayer.Native.Interop Runtime prerequisites .NET 9 SDK or runtime for build and execution. Avalonia 11.x application host. Platform media dependencies for the backend modes you enable at runtime. FFmpeg and LibVLC only when you intentionally use those fallback paths. Recommended first validation...">
+<meta property="og:description" content="Installation Add the primary package dotnet add package MediaPlayer.Controls Add provider-contract packages when you need composition control dotnet add package MediaPlayer.Native.Abstractions dotnet add package MediaPlayer.Native.Interop Runtime prerequisites .NET 10 SDK to build and .NET 10 runtime to run. An Avalonia 12.2 application host. The Windows native playback backend uses the .NET SDK to build its helper and the .NET 10 Desktop Runtime to run it....">
 <meta property="og:image" content="https://wieslawsoltes.github.io/MediaPlayer/images/logo.svg">
 <meta property="og:image:alt" content="Installation | MediaPlayer for Avalonia">
   </head>
@@ -167,8 +167,9 @@ dotnet add package MediaPlayer.Native.Interop
 </code></pre>
 <h2 id="runtime-prerequisites">Runtime prerequisites</h2>
 <ul>
-<li>.NET 9 SDK or runtime for build and execution.</li>
-<li>Avalonia 11.x application host.</li>
+<li>.NET 10 SDK to build and .NET 10 runtime to run.</li>
+<li>An Avalonia 12.2 application host.</li>
+<li>The Windows native playback backend uses the .NET SDK to build its helper and the .NET 10 Desktop Runtime to run it.</li>
 <li>Platform media dependencies for the backend modes you enable at runtime.</li>
 <li>FFmpeg and LibVLC only when you intentionally use those fallback paths.</li>
 </ul>
